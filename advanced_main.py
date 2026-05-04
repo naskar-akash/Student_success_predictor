@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler,LabelEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, confusion_matrix
 
 # Loading the data
 df = pd.read_csv("advanced_student_data.csv")
@@ -38,6 +40,23 @@ y = df_scaled['Passed']  # Target variable
 
 # Splitting the data
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
+# Model training
+model = KNeighborsClassifier()
+model.fit(x_train, y_train) 
+y_pred = model.predict(x_test) # Model's prediction
+
+
+# # Plotting y_pred vs y_test
+# plt.figure(figsize=(8,5))
+# plt.plot(range(len(y_test)), y_test, marker='o', linestyle='-', color='b', label='Actual (y_test)')
+# plt.plot(range(len(y_pred)), y_pred, marker='x', linestyle='--', color='r', label='Predicted (y_pred)')
+# plt.xlabel("Sample Index")
+# plt.ylabel("Class (Passed)")
+# plt.title("Comparison of Actual vs Predicted Values")
+# plt.legend()
+# plt.tight_layout()
+# plt.show()
 
 
 
