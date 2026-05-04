@@ -33,5 +33,11 @@ scalar = StandardScaler()
 df_scaled = df.copy()
 df_scaled[cols] = scalar.fit_transform(df[cols])
 
+x = df_scaled[cols] # Features
+y = df_scaled['Passed']  # Target variable
+
+# Splitting the data
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=42)
+
 
 
