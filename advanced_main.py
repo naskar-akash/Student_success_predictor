@@ -33,6 +33,5 @@ scalar = StandardScaler()
 df_scaled = df.copy()
 df_scaled[cols] = scalar.fit_transform(df[cols])
 
-print("Scaled dataframe....")
-print(df_scaled.head(10))
+
 
