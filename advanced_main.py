@@ -46,17 +46,17 @@ model = KNeighborsClassifier()
 model.fit(x_train, y_train) 
 y_pred = model.predict(x_test) # Model's prediction
 
+# Model evaluation
+clf_report = classification_report(y_test, y_pred) # Classification report
+cnf_matrix = confusion_matrix(y_test, y_pred) # Confusion matrix
 
-# # Plotting y_pred vs y_test
-# plt.figure(figsize=(8,5))
-# plt.plot(range(len(y_test)), y_test, marker='o', linestyle='-', color='b', label='Actual (y_test)')
-# plt.plot(range(len(y_pred)), y_pred, marker='x', linestyle='--', color='r', label='Predicted (y_pred)')
-# plt.xlabel("Sample Index")
-# plt.ylabel("Class (Passed)")
-# plt.title("Comparison of Actual vs Predicted Values")
-# plt.legend()
-# plt.tight_layout()
-# plt.show()
-
-
+# Visualising the confusion matrix
+plt.figure(figsize=(6,4))
+sns.heatmap(cnf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=["Fail","Pass"], yticklabels=["Fail","Pass"])
+plt.xlabel("Predicted ---->")
+plt.ylabel("Actual ---->")
+plt.title("Confusion Matrix")
+plt.tight_layout()
+plt.savefig("Figure/confusion_matrix.png", dpi=300, bbox_inches='tight') # Saving the confusion matrix as an image
+plt.show()
 
