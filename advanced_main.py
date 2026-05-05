@@ -35,7 +35,7 @@ scalar = StandardScaler()
 df_scaled = df.copy()
 df_scaled[cols] = scalar.fit_transform(df[cols])
 
-x = df_scaled[cols] # Features
+x = df_scaled[cols + ["Internet"]] # Features
 y = df_scaled['Passed']  # Target variable
 
 # Splitting the data
@@ -50,13 +50,37 @@ y_pred = model.predict(x_test) # Model's prediction
 clf_report = classification_report(y_test, y_pred) # Classification report
 cnf_matrix = confusion_matrix(y_test, y_pred) # Confusion matrix
 
-# Visualising the confusion matrix
-plt.figure(figsize=(6,4))
-sns.heatmap(cnf_matrix, annot=True, fmt="d", cmap="Blues", xticklabels=["Fail","Pass"], yticklabels=["Fail","Pass"])
-plt.xlabel("Predicted ---->")
-plt.ylabel("Actual ---->")
-plt.title("Confusion Matrix")
-plt.tight_layout()
-plt.savefig("Figure/confusion_matrix.png", dpi=300, bbox_inches='tight') # Saving the confusion matrix as an image
-plt.show()
+# # Visualising the confusion matrix
+# visit 'understanding_data.txt' for details on how to visualise confusion matrix using seaborn heatmap
 
+# Predicting the result for new data
+print("----- Predict Your Result -----")
+try:
+    study_hrs = float(input("Enter Study Hours: "))
+    attendance = float(input("Enter Attendance: "))
+    past_score = float(input("Enter Past Score: "))
+    sleep_hrs = float(input("Enter Sleep Hours: "))
+    internet_access = input("Internet Access (Yes/No): ").strip().lower()
+    
+    internet_access_encoded = 1 if internet_access == "yes" else 0
+    
+    # Scaling the input features
+    user_input_df = pd.DataFrame([{
+        'StudyHours': study_hrs,
+        'Attendance': attendance,
+        'PastScore': past_score,
+        'SleepHours': sleep_hrs,
+        'Internet': internet_access_encoded 
+    }])
+    user_input_df = user_input_df[cols + ["Internet"]]
+    user_input_df[cols] = scalar.transform(user_input_df[cols])
+
+    prediction = model.predict(user_input_df)[0]
+    
+    result = "Pass" if prediction == 1 else "Fail"
+    print(f"Predicted Result: {result}")
+
+except ValueError:
+    print("Invalid input. Please enter numeric values for Study Hours, Attendance, Past Score, and Sleep Hours.")
+except Exception as e:
+    print(f"An error occurred: {e}")
